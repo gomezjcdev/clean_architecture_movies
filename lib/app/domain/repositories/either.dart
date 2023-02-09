@@ -1,16 +1,16 @@
 class Either<L, R> {
-  final L? left;
-  final R? right;
+  final L? _left;
+  final R? _right;
   final bool isLeft;
 
-  Either._(this.left, this.right, this.isLeft);
+  Either._(this._left, this._right, this.isLeft);
 
   factory Either.left(L value) {
     return Either._(value, null, true);
   }
 
   factory Either.right(R value) {
-    return Either._(null, value, true);
+    return Either._(null, value, false);
   }
 
   T when<T>(
@@ -18,9 +18,9 @@ class Either<L, R> {
     T Function(R) right,
   ) {
     if (isLeft) {
-      return left(left as L);
+      return left(_left as L);
     } else {
-      return right(right as R);
+      return right(_right as R);
     }
   }
 }
