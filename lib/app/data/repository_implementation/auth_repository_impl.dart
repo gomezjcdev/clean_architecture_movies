@@ -29,13 +29,19 @@ class AuthRepositoryImpl implements AuthRepository {
       String username, String password) async {
     final requestToken = await authApi.createRequestToken();
 
-    if (username != 'test') {
-      return Either.left(SignInFailure.notFound);
+    if (requestToken == null) {
+      return Either.left(SignInFailure.unknown);
     }
 
-    if (password != '123456') {
-      return Either.left(SignInFailure.unAuthorized);
-    }
+    final loginResult = await authApi.createSessionWithLogin(
+      username: username,
+      password: password,
+      requestToken: requestToken,
+    );
+
+    loginResult.when((failure) {
+      return Either.left(failure);
+    }, (newRequestToken) {});
 
     await secureStorage.write(key: _key, value: requestToken);
 
