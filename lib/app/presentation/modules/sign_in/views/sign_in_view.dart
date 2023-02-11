@@ -43,11 +43,11 @@ class _SignInViewState extends State<SignInView> {
                   TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     onChanged: (value) => setState(() {
-                      _password = value.replaceAll(' ', '').toLowerCase();
+                      _password = value.replaceAll(' ', '');
                     }),
                     decoration: const InputDecoration(hintText: 'password'),
                     validator: (value) {
-                      value = value?.replaceAll(' ', '').toLowerCase() ?? '';
+                      value = value?.replaceAll(' ', '') ?? '';
 
                       return value.length < 4 ? 'Invalid password' : null;
                     },

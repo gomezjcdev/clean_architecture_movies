@@ -39,13 +39,13 @@ class AuthRepositoryImpl implements AuthRepository {
       requestToken: requestToken,
     );
 
-    loginResult.when((failure) {
+    return loginResult.when((failure) {
       return Either.left(failure);
-    }, (newRequestToken) {});
+    }, (newRequestToken) async {
+      final sessionResult = await authApi.createSession(newRequestToken);
 
-    await secureStorage.write(key: _key, value: requestToken);
-
-    return Either.right(User());
+      return Either.right(User());
+    });
   }
 
   @override
